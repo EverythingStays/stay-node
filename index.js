@@ -16,8 +16,12 @@ const log = (hash, msg) => {
   console.log(hash + ' > ' + msg)
 }
 
+const sendStatus = (res, code) => {
+  res.status(code).send(code.toString())
+}
+
 app.get('/health', (req, res) => {
-  res.sendStatus(200)
+  sendStatus(res, 200)
 })
 
 // 1. Check size of hash contents
@@ -29,12 +33,12 @@ app.post('/api/pin/add/:hash/:peer_id', (req, res) => {
   const peer_id = req.params.peer_id
   if (!hash || !peer_id) {
     log('None', 'No hash and/or peer_id provided')
-    res.sendStatus(400)
+    sendStatus(res, 400)
     return
   }
   if (PEER_WHITELIST.length > 0 && PEER_WHITELIST.indexOf(peer_id) === -1) {
     log(hash, 'Peer not allowed to pin content')
-    res.sendStatus(403)
+    sendStatus(res, 403)
     return
   }
   log(hash, 'Checking size of hash...')
@@ -42,13 +46,13 @@ app.post('/api/pin/add/:hash/:peer_id', (req, res) => {
     if (err) throw new Error(err)
     const hash_size = statRes.CumulativeSize
     if (hash_size > SIZE_LIMIT) {
-      res.sendStatus(413)
+      sendStatus(res, 413)
     } else {
       log(hash, 'Size is ok ('+hash_size+')... Pinning')
       ipfs.pin.add(hash, (err, pinRes) => {
         if (err) throw new Error(err)
         log(hash, 'Pinned!')
-        res.sendStatus(200)
+        sendStatus(res, 200)
       })
     }
   })
