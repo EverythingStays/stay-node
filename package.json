@@ -1,0 +1,17 @@
+{
+  "name": "stay-node",
+  "version": "0.0.1",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "Victor Bjelkholm <victorbjelkholm@gmail.com> (https://www.github.com/victorbjelkholm)",
+  "license": "MIT",
+  "dependencies": {
+    "express": "4.13.4",
+    "ipfs-api": "2.13.2",
+    "mkdirp": "0.5.1"
+  }
+}
